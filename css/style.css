@@ -1,0 +1,13 @@
+*{
+    box-sizing: border-box;
+  }
+  img {
+    width: 250px;
+    height: 250px;
+  }
+  canvas {
+    max-width: 960px;
+    max-height: 500px;
+    margin: 20px;
+  
+  }
