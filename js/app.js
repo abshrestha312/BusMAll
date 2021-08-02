@@ -115,35 +115,80 @@ function handleClick(e) {
   }
 }
 
+
+function handleButton(e){
+  // alert(e.target.id);
+  let buttonClicked = e.target.id;
+  //if the user clicks the button this code block is run.
+  if (buttonClicked === 'buttonSubmit') {
+    voteContainerElem.textContent = '';
+    let canvasElem =document.createElement('canvas');
+    canvasElem.id ='myChart';
+    canvasContainerElem.appendChild(canvasElem);
+
+    renderResultsList();
+    makeBarChart();
+    putItemsInStorage();
+    voteContainerElem.removeEventListener('click', handleButton);
+  }
+}
+
+// function to put allItems array in storage in a stringified array.
+function putItemsInStorage (){
+  let stringifiedArray = JSON.stringify(Product.allProducts);
+  localStorage.setItem('product', stringifiedArray);
+}
+
+
+// function to pull stringifiedArray from storage. This function parses the item and turns it back into an instance of constructor function Item, adjusting the views and votes to equal the new total.
+function getItemsFromStorage(){
+  let itemsInStorage = localStorage.getItem('product');
+  if (itemsInStorage) {
+    let parsedItems = JSON.parse(itemsInStorage);
+    for (let i=0; i<parsedItems.length; i++) {
+      let item = parsedItems[i];
+      let newProduct = new Product(product.name, product.img);
+      newProduct.clicks = product.clicks;
+      newProduct.views = product.views;
+      Product.allProducts.push(newProduct);
+    }
+  }
+}
 // --------------------------- Listener ------------------------//
 
 // listener on the container for pictures
 voteContainerElem.addEventListener('click', handleClick);
 
-// --------------------------- call functions ---------------------//
+voteContainerElem.addEventListener('click', handleButton);
 
-Product.allProducts.push(new Product('Bag', 'img/bag.png'));
-Product.allProducts.push(new Product('Banana', 'img/banana.png'));
-Product.allProducts.push(new Product('Bathroom', 'img/bathroom.png'));
-Product.allProducts.push(new Product('Boots', 'img/boots.png'));
-Product.allProducts.push(new Product('Breakfast', 'img/breakfast.png'));
-Product.allProducts.push(new Product('Bubblegum', 'img/bubblegum.png'));
-Product.allProducts.push(new Product('Chair', 'img/chair.png'));
-Product.allProducts.push(new Product('Cthulhu', 'img/cthulhu.png'));
-Product.allProducts.push(new Product('Dog-Duck', 'img/dog-duck.png'));
-Product.allProducts.push(new Product('Dragon', 'img/dragon.png'));
-Product.allProducts.push(new Product('Pen', 'img/pen.png'));
-Product.allProducts.push(new Product('Pet-Sweep', 'img/pet-sweep.png'));
-Product.allProducts.push(new Product('Scissors', 'img/scissors.png'));
-Product.allProducts.push(new Product('Shark', 'img/shark.png'));
-Product.allProducts.push(new Product('Sweep', 'img/sweep.png'));
-Product.allProducts.push(new Product('Tauntaun', 'img/tauntaun.png'));
-Product.allProducts.push(new Product('Unicorn', 'img/unicorn.png'));
-Product.allProducts.push(new Product('Water Can', 'img/water-can.png'));
-Product.allProducts.push(new Product('Wine Glass', 'img/wine-glass.png'));
+// --------------------------- call functions ---------------------//
+getItemsFromStorage();
+if (Product.allProducts.length ===0){
+  Product.allProducts.push(new Product('Bag', 'img/bag.png'));
+  Product.allProducts.push(new Product('Banana', 'img/banana.png'));
+  Product.allProducts.push(new Product('Bathroom', 'img/bathroom.png'));
+  Product.allProducts.push(new Product('Boots', 'img/boots.png'));
+  Product.allProducts.push(new Product('Breakfast', 'img/breakfast.png'));
+  Product.allProducts.push(new Product('Bubblegum', 'img/bubblegum.png'));
+  Product.allProducts.push(new Product('Chair', 'img/chair.png'));
+  Product.allProducts.push(new Product('Cthulhu', 'img/cthulhu.png'));
+  Product.allProducts.push(new Product('Dog-Duck', 'img/dog-duck.png'));
+  Product.allProducts.push(new Product('Dragon', 'img/dragon.png'));
+  Product.allProducts.push(new Product('Pen', 'img/pen.png'));
+  Product.allProducts.push(new Product('Pet-Sweep', 'img/pet-sweep.png'));
+  Product.allProducts.push(new Product('Scissors', 'img/scissors.png'));
+  Product.allProducts.push(new Product('Shark', 'img/shark.png'));
+  Product.allProducts.push(new Product('Sweep', 'img/sweep.png'));
+  Product.allProducts.push(new Product('Tauntaun', 'img/tauntaun.png'));
+  Product.allProducts.push(new Product('Unicorn', 'img/unicorn.png'));
+  Product.allProducts.push(new Product('Water Can', 'img/water-can.png'));
+  Product.allProducts.push(new Product('Wine Glass', 'img/wine-glass.png'));
+}
 
 picksThreeProducts();
 renderThreeProducts();
+
+//-------Bar Chart ------------//
 
 
 const ctx = document.getElementById('myChart').getContext('2d');
